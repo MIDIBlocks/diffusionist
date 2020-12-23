@@ -78,6 +78,7 @@ export function setupLeftPane() {
 
   setupStyleMapFolder();
   setupBiasFolder();
+  setupHandsfreeFolder()
 
   // TODO: setupFlowFolder();
   // TODO: setupScaleFolder();
@@ -302,4 +303,36 @@ function setupBiasFolder() {
       simulationUniforms.bias.value.x = value.x;
       simulationUniforms.bias.value.y = value.y;
     });
+}
+
+/**
+ * Handsfree Folder
+ */
+function setupHandsfreeFolder () {
+  const handsfreeFolder = pane.addFolder({ title: 'Handsfree Mode' });
+  let el
+
+  // Start button
+  el = handsfreeFolder.addButton({
+    title: 'Activate Handsfree Mode 🖐👀🖐'
+  }).on('click', (value) => {
+    window.handsfree.start()
+  })
+  console.log(el)
+  el.controller.view.elem_.classList.add('handsfree-show-when-stopped', 'handsfree-hide-when-loading')
+
+  // Loading
+  el = handsfreeFolder.addButton({
+    title: 'Initializing...'
+  })
+  el.controller.view.elem_.classList.add('handsfree-show-when-loading')
+  el.controller.view.elem_.disabled = true
+
+  // Stop Button
+  el = handsfreeFolder.addButton({
+    title: 'Stop Handsfree Mode 🖐👀🖐'
+  }).on('click', (value) => {
+    window.handsfree.start()
+  })
+  el.controller.view.elem_.classList.add('handsfree-show-when-started')
 }

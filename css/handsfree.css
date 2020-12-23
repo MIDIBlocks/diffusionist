@@ -5,3 +5,13 @@
   height: auto;
   width: 350px;
 }
+
+.handsfree-video {
+  display: block;
+  opacity: 0.2;
+}
+
+.handsfree-show-when-started button {
+  background: #dc5353;
+  color: #fff;
+}
