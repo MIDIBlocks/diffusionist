@@ -1,4 +1,4 @@
-import './js/handsfree'
+import './js/handsfree/index.js'
 import * as THREE from 'three';
 
 import { drawFirstFrame } from './js/firstFrame';

@@ -28,7 +28,7 @@ module.exports = {
     contentBase: path.resolve('./'),
     compress: true,
     open: true,
-    watchContentBase: true
+    watchContentBase: false
   },
   output: {
     filename: '[name].bundle.js',

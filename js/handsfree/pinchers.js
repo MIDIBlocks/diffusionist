@@ -1,23 +1,9 @@
 /**
- * Scrolls the page vertically by closing hand
+ * Adds pinch helpers
  */
-import Handsfree from 'handsfree'
+const handsfree = window.handsfree
 
-const handsfree = new Handsfree({
-  assetsPath: '/handsfree/assets',
-  hands: true,
-  showDebug: true,
-})
-window.handsfree = handsfree
-
-// Indexes to the finger tips
-// @see https://handsfree.js.org/ref/model/hands.html#data
-const fingertipIndex = [8, 12, 16, 20]
-
-/**
- * Adds a pinch gesture for updating settings
- */
-handsfree.use('pinchSlide', {
+handsfree.use('pinchers', {
   models: 'hands',
 
   // Number of frames the current element is the same as the last
@@ -68,8 +54,8 @@ handsfree.use('pinchSlide', {
     for (let hand = 0; hand < hands.multiHandLandmarks.length; hand++) {
       for (let finger = 0; finger < 4; finger++) {
         // Check if fingers are touching
-        const a = hands.multiHandLandmarks[hand][4].x - hands.multiHandLandmarks[hand][fingertipIndex[finger]].x
-        const b = hands.multiHandLandmarks[hand][4].y - hands.multiHandLandmarks[hand][fingertipIndex[finger]].y
+        const a = hands.multiHandLandmarks[hand][4].x - hands.multiHandLandmarks[hand][window.fingertipIndex[finger]].x
+        const b = hands.multiHandLandmarks[hand][4].y - hands.multiHandLandmarks[hand][window.fingertipIndex[finger]].y
         const c = Math.sqrt(a*a + b*b) * height
         const thresholdMet = this.thresholdMet[hand][finger] = c < this.config.threshold
 
