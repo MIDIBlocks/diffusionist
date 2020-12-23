@@ -1,6 +1,7 @@
 // Setup
 import './setup'
 import './pinchers'
+import './mouse'
 
 // This will hold our components
 window.field = {}

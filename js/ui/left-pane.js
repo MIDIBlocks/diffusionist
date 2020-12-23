@@ -286,7 +286,8 @@ function setupBiasFolder() {
   const biasFolder = pane.addFolder({ title: 'Bias' });
 
   // X/Y bias direction 2D pad
-  biasFolder.addInput(parameterValues, 'bias', {
+  window.field.simBias = simulationUniforms.bias
+  window.field.bias = biasFolder.addInput(parameterValues, 'bias', {
     label: 'Direction',
     x: {
       min: -parameterMetadata.bias.x.max,

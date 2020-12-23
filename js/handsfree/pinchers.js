@@ -2,6 +2,7 @@
  * Adds pinch helpers
  */
 const handsfree = window.handsfree
+import {TweenMax} from 'gsap'
 
 handsfree.use('pinchers', {
   models: 'hands',
@@ -11,6 +12,7 @@ handsfree.use('pinchers', {
 
   // Whether the fingers are touching
   thresholdMet: [[0, 0, 0, 0,], [0, 0, 0, 0]],
+  framesSinceLastGrab: [[0, 0, 0, 0,], [0, 0, 0, 0]],
 
   // The original grab point for each finger
   origPinch: [
@@ -51,7 +53,10 @@ handsfree.use('pinchers', {
     const height = this.handsfree.debug.$canvas.hands.height
     
     // Detect if the threshold for clicking is met with specific morphs
-    for (let hand = 0; hand < hands.multiHandLandmarks.length; hand++) {
+    for (let n = 0; n < hands.multiHandLandmarks.length; n++) {
+      // Set the hand index
+      let hand = hands.multiHandedness[n].label === 'left' ? 0 : 1
+      
       for (let finger = 0; finger < 4; finger++) {
         // Check if fingers are touching
         const a = hands.multiHandLandmarks[hand][4].x - hands.multiHandLandmarks[hand][window.fingertipIndex[finger]].x
@@ -60,20 +65,17 @@ handsfree.use('pinchers', {
         const thresholdMet = this.thresholdMet[hand][finger] = c < this.config.threshold
 
         if (thresholdMet) {
-          console.log(finger)
+          if (this.framesSinceLastGrab[hand][finger] > this.config.numThresholdErrorFrames) {
+            this.origPinch[hand][finger] = hands.multiHandLandmarks[hand][4]
+            TweenMax.killTweensOf(this.tween[hand][finger])
+          }
+          this.framesSinceLastGrab[hand][finger] = 0
         }
+        ++this.framesSinceLastGrab[hand][finger]
       }
     }
 
     // Set the original grab point
-    // if (this.thresholdMet) {
-    //   if (this.framesSinceLastGrab > this.config.numThresholdErrorFrames) {
-    //     this.origScrollTop = this.getTargetScrollTop() + hands.multiHandLandmarks[0][4].y * height * this.config.speed
-    //     TweenMax.killTweensOf(this.tweenScroll)
-    //   }
-    //   this.framesSinceLastGrab = 0
-    // }
-    // ++this.framesSinceLastGrab
     
     // // Scroll
     // if (this.framesSinceLastGrab < this.config.numThresholdErrorFrames) {
