@@ -50,23 +50,26 @@ handsfree.use('pinchers', {
    */
   onFrame ({hands}) {
     if (!hands.multiHandLandmarks) return
+
     const height = this.handsfree.debug.$canvas.hands.height
+    const leftVisible = hands.multiHandedness.some(hand => hand.label === 'Right')
+    const rightVisible = hands.multiHandedness.some(hand => hand.label === 'Left')
     
     // Detect if the threshold for clicking is met with specific morphs
     for (let n = 0; n < hands.multiHandLandmarks.length; n++) {
       // Set the hand index
-      let hand = hands.multiHandedness[n].label === 'left' ? 0 : 1
+      let hand = hands.multiHandedness[n].label === 'Right' ? 0 : 1
       
       for (let finger = 0; finger < 4; finger++) {
         // Check if fingers are touching
-        const a = hands.multiHandLandmarks[hand][4].x - hands.multiHandLandmarks[hand][window.fingertipIndex[finger]].x
-        const b = hands.multiHandLandmarks[hand][4].y - hands.multiHandLandmarks[hand][window.fingertipIndex[finger]].y
+        const a = hands.multiHandLandmarks[n][4].x - hands.multiHandLandmarks[n][window.fingertipIndex[finger]].x
+        const b = hands.multiHandLandmarks[n][4].y - hands.multiHandLandmarks[n][window.fingertipIndex[finger]].y
         const c = Math.sqrt(a*a + b*b) * height
         const thresholdMet = this.thresholdMet[hand][finger] = c < this.config.threshold
 
         if (thresholdMet) {
           if (this.framesSinceLastGrab[hand][finger] > this.config.numThresholdErrorFrames) {
-            this.origPinch[hand][finger] = hands.multiHandLandmarks[hand][4]
+            this.origPinch[hand][finger] = hands.multiHandLandmarks[n][4]
             TweenMax.killTweensOf(this.tween[hand][finger])
           }
           this.framesSinceLastGrab[hand][finger] = 0
@@ -76,6 +79,9 @@ handsfree.use('pinchers', {
     }
 
     // Set the original grab point
+    if (leftVisible && this.thresholdMet[0][0]) {
+      console.log(Math.random())
+    }
     
     // // Scroll
     // if (this.framesSinceLastGrab < this.config.numThresholdErrorFrames) {
