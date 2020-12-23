@@ -1,0 +1,7 @@
+.handsfree-feedback {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: auto;
+  width: 350px;
+}

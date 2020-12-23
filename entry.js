@@ -1,3 +1,4 @@
+import Handsfree from 'handsfree'
 import * as THREE from 'three';
 
 import { drawFirstFrame } from './js/firstFrame';
@@ -124,3 +125,14 @@ function update() {
   // Kick off next frame
   requestAnimationFrame(update);
 }
+
+/**
+ * Handsfree.js
+ */
+const handsfree = new Handsfree({
+  assetsPath: '/handsfree/assets',
+  hands: true,
+  showDebug: true,
+})
+window.handsfree = handsfree
+// handsfree.start()

@@ -4,6 +4,7 @@
   "description": "Grid-based process that generates complex and dynamic patterns based the interactions of two chemicals as they _diffuse_ through a medium. At every location on the grid these chemicals (usually referred to as `A` and `B`) have a chance of causing a _reaction_ that converts chemicals of one type to another based on their relative concentrations at that location.",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "webpack-dev-server",
     "build": "webpack"
@@ -18,6 +19,9 @@
     "url": "https://github.com/jasonwebb/reaction-diffusion-playground/issues"
   },
   "homepage": "https://jasonwebb.github.io/reaction-diffusion-playground",
+  "resolutions": {
+    "acorn": "8.0.1"
+  },
   "devDependencies": {
     "fps": "0.0.3",
     "glsl-shader-loader": "^0.1.6",
@@ -29,5 +33,7 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "handsfree": "^8.0.7"
+  }
 }
