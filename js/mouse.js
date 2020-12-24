@@ -20,6 +20,8 @@ export function setupMouse() {
   mouseFollower.style.pointerEvents = 'none';
   document.body.append(mouseFollower);
 
+  window.$canvas = canvas
+
   // Begin drag, fill indicator circle white
   canvas.addEventListener('mousedown', (e) => {
     mouseDown = true;

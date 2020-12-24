@@ -2,7 +2,6 @@
  * Adds pinch helpers
  */
 const handsfree = window.handsfree
-import { refreshUI } from '../ui'
 import {TweenMax} from 'gsap'
 
 handsfree.use('pinchers', {
