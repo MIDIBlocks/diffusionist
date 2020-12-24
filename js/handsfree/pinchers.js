@@ -34,6 +34,13 @@ handsfree.use('pinchers', {
   // Number of frames that has passed since the last grab
   numFramesFocused: [[0, 0, 0, 0,], [0, 0, 0, 0]],
 
+  // Number of frames mouse has been downed
+  mouseDowned: 0,
+  // Is the mouse up?
+  mouseUp: false,
+  // Whether one of the morph confidences have been met
+  mouseThresholdMet: false,
+  
   config: {
     // Number of frames over the same element before activating that element
     framesToFocus: 10,
@@ -42,7 +49,9 @@ handsfree.use('pinchers', {
     threshold: 50,
 
     // Number of frames where a hold is not registered before releasing a drag
-    numThresholdErrorFrames: 5
+    numThresholdErrorFrames: 5,
+
+    maxMouseDownedFrames: 1
   },
 
   onUse () {
@@ -93,15 +102,60 @@ handsfree.use('pinchers', {
       field.simBias.value.y = .5 - (this.curPinch[0][0].y - this.origPinch[0][0].y) * 2
     }
     
-    // Update the Hue with right middle finger
-    if (rightVisible && this.thresholdMet[1][1]) {
-      window.field.displayUni.hslTo.value.x = (this.curPinch[1][1].x - this.origPinch[1][1].x)
-      window.field.displayUni.hslTo.value.y = (this.curPinch[1][1].y - this.origPinch[1][1].y)
+    // Update the Hue with left pinky
+    if (leftVisible && this.thresholdMet[0][3]) {
+      field.simBias.value.x = 0
+      field.simBias.value.y = 0
     }
 
     // Clear the board with both pinkies
     if (leftVisible && this.thresholdMet[0][3] && rightVisible && this.thresholdMet[1][3]) {
       field.clear.controller.button.emitter.observers_.click[0].handler()
+    }
+
+    this.checkClick(rightVisible)
+  },
+
+  /**
+   * Check if we are "mouse clicking"
+   */
+  checkClick (rightVisible) {
+    // Click
+    if (rightVisible && this.thresholdMet[1][0]) {
+      this.mouseDowned++
+    } else {
+      this.mouseUp = this.mouseDowned
+      this.mouseDowned = 0
+    }
+        
+    // Set the state
+    let state = ''
+    if (this.mouseDowned > 0 && this.mouseDowned <= this.config.maxMouseDownedFrames) {
+      state = 'mousedown'
+    } else if (this.mouseDowned > this.config.maxMouseDownedFrames) {
+      state = 'mousedrag'
+    } else if (this.mouseUp) {
+      state = 'mouseup'
+    }
+
+    if (state === 'mousedown') {
+      window.$canvas.dispatchEvent(
+        new MouseEvent('mousedown', {
+          bubbles: true,
+          cancelable: true,
+          clientX: this.curPinch[1][0].x,
+          clientY: this.curPinch[1][0].y,
+        })
+      )
+    } else if (state === 'mouseup') {
+      window.$canvas.dispatchEvent(
+        new MouseEvent('mouseup', {
+          bubbles: true,
+          cancelable: true,
+          clientX: this.curPinch[1][0].x,
+          clientY: this.curPinch[1][0].y,
+        })
+      )
     }
   }
 })

@@ -29,7 +29,7 @@ window.handsfree.use('mousemove', {
         bubbles: true,
         cancelable: true,
         clientX: this.tween.x,
-        clientY: this.tween.y
+        clientY: this.tween.y,
       }))
     }
   }

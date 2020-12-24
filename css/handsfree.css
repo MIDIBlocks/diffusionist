@@ -8,7 +8,8 @@
 
 .handsfree-video {
   display: block;
-  opacity: 0.2;
+  opacity: 0.7;
+  z-index: 999;
 }
 
 .handsfree-show-when-started button {
