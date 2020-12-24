@@ -25,7 +25,7 @@ export let currentSeedType = InitialTextureTypes.CIRCLE;
 let seedImageChooser;
 
 export function setupRightPane() {
-  pane = new Tweakpane({ title: 'Parameters' });
+  window.rightPane = pane = new Tweakpane({ title: 'Parameters' });
 
   setupReactionDiffusionParameters();
   setupSeedFolder();
@@ -209,7 +209,7 @@ function setupSeedFolder() {
     });
 
   // Clear button
-  seedFolder.addButton({
+  window.field.clear = seedFolder.addButton({
     title: '🗑️ Clear the screen'
   })
     .on('click', () => {
@@ -454,6 +454,8 @@ function setupRenderingFolder() {
     }
 
     function addHSLMappingOptions(folder) {
+      window.field.displayUni = displayUniforms
+      
       window.field.chemMin = folder.addInput(parameterValues.hsl.from, 'min', { label: 'Chemical range (low)', min: 0.0, max: 1.0, step: .0001 })
         .on('change', (value) => { displayUniforms.hslFrom.value.x = value; });
 

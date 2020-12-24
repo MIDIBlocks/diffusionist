@@ -71,7 +71,7 @@ export function setupLeftPane() {
     document.body.appendChild(paneContainer);
   }
 
-  pane = new Tweakpane({
+  window.leftPane = pane = new Tweakpane({
     title: 'Effects',
     container: paneContainer
   });
@@ -319,7 +319,6 @@ function setupHandsfreeFolder () {
   }).on('click', (value) => {
     window.handsfree.start()
   })
-  console.log(el)
   el.controller.view.elem_.classList.add('handsfree-show-when-stopped', 'handsfree-hide-when-loading')
 
   // Loading

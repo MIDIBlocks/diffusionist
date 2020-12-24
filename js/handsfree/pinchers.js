@@ -2,6 +2,7 @@
  * Adds pinch helpers
  */
 const handsfree = window.handsfree
+import { refreshUI } from '../ui'
 import {TweenMax} from 'gsap'
 
 handsfree.use('pinchers', {
@@ -87,22 +88,21 @@ handsfree.use('pinchers', {
       }
     }
 
-    // Update the bias
+    // Update the bias with left index
     if (leftVisible && this.thresholdMet[0][0]) {
       field.simBias.value.x = (this.curPinch[0][0].x - this.origPinch[0][0].x) * 2 - .5
       field.simBias.value.y = .5 - (this.curPinch[0][0].y - this.origPinch[0][0].y) * 2
     }
     
-    // // Scroll
-    // if (this.framesSinceLastGrab < this.config.numThresholdErrorFrames) {
-    //   TweenMax.to(this.tweenScroll, 1, {
-    //     y: this.origScrollTop - hands.multiHandLandmarks[0][4].y * height * this.config.speed,
-    //     overwrite: true,
-    //     ease: 'linear.easeNone',
-    //     immediateRender: true  
-    //   })
-      
-    //   this.$target.scrollTo(0, this.tweenScroll.y)
-    // }
+    // Update the Hue with right middle finger
+    if (rightVisible && this.thresholdMet[1][1]) {
+      window.field.displayUni.hslTo.value.x = (this.curPinch[1][1].x - this.origPinch[1][1].x)
+      window.field.displayUni.hslTo.value.y = (this.curPinch[1][1].y - this.origPinch[1][1].y)
+    }
+
+    // Clear the board with both pinkies
+    if (leftVisible && this.thresholdMet[0][3] && rightVisible && this.thresholdMet[1][3]) {
+      field.clear.controller.button.emitter.observers_.click[0].handler()
+    }
   }
 })
