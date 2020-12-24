@@ -19,6 +19,10 @@ handsfree.use('pinchers', {
     [{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}],
     [{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}]
   ],
+  curPinch: [
+    [{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}],
+    [{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0},{x: 0, y: 0}]
+  ],
 
   // The tweened scrollTop, used to smoothen out scroll
   // [[leftHand], [rightHand]]
@@ -54,6 +58,7 @@ handsfree.use('pinchers', {
     const height = this.handsfree.debug.$canvas.hands.height
     const leftVisible = hands.multiHandedness.some(hand => hand.label === 'Right')
     const rightVisible = hands.multiHandedness.some(hand => hand.label === 'Left')
+    const field = window.field
     
     // Detect if the threshold for clicking is met with specific morphs
     for (let n = 0; n < hands.multiHandLandmarks.length; n++) {
@@ -68,6 +73,10 @@ handsfree.use('pinchers', {
         const thresholdMet = this.thresholdMet[hand][finger] = c < this.config.threshold
 
         if (thresholdMet) {
+          // Set the current pinch
+          this.curPinch[hand][finger] = hands.multiHandLandmarks[n][4]
+          
+          // Store the original pinch
           if (this.framesSinceLastGrab[hand][finger] > this.config.numThresholdErrorFrames) {
             this.origPinch[hand][finger] = hands.multiHandLandmarks[n][4]
             TweenMax.killTweensOf(this.tween[hand][finger])
@@ -78,9 +87,10 @@ handsfree.use('pinchers', {
       }
     }
 
-    // Set the original grab point
+    // Update the bias
     if (leftVisible && this.thresholdMet[0][0]) {
-      console.log(Math.random())
+      field.simBias.value.x = (this.curPinch[0][0].x - this.origPinch[0][0].x) * 2 - .5
+      field.simBias.value.y = .5 - (this.curPinch[0][0].y - this.origPinch[0][0].y) * 2
     }
     
     // // Scroll
