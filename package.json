@@ -4,9 +4,9 @@
   "description": "Grid-based process that generates complex and dynamic patterns based the interactions of two chemicals as they _diffuse_ through a medium. At every location on the grid these chemicals (usually referred to as `A` and `B`) have a chance of causing a _reaction_ that converts chemicals of one type to another based on their relative concentrations at that location.",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server",
     "preinstall": "npx npm-force-resolutions",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack-dev-server",
+    "serve": "npm run start",
     "build": "webpack"
   },
   "repository": {
@@ -23,6 +23,11 @@
     "acorn": "8.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
     "fps": "0.0.3",
     "glsl-shader-loader": "^0.1.6",
     "path": "^0.12.7",
@@ -34,7 +39,6 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "gsap": "^3.5.1",
-    "handsfree": "^8.0.7"
+    "handsfree": "^8.1.2"
   }
 }

@@ -5,10 +5,8 @@ module.exports = {
   entry: path.resolve('./entry.js'),
   module: {
     rules: [
-      {
-        test: /\.svg$/,
-        loader: 'svg-inline-loader'
-      },
+      {test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/},
+      {test: /\.svg$/, loader: 'svg-inline-loader'},
       {
         test: /\.(frag|vert|glsl)$/,
         use: [
